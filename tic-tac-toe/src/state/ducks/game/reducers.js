@@ -17,6 +17,27 @@ const move = (board, { player, row, col }) => {
   return updated;
 };
 
+const takeTurn = (state, action) => {
+  switch (action.payload.player) {
+    case types.HUMAN:
+      return action;
+    case types.COMPUTER:
+      console.log('choose of board');
+      return state;
+    default:
+      return state;
+  }
+};
+
+const turnReducer = (state = false, action) => {
+  switch (action.type) {
+    case types.PLAYER:
+      return takeTurn(state, action);
+    default:
+      return state;
+  }
+};
+
 const boardReducer = (state = [[]], action) => {
   switch (action.type) {
     case types.NEW_GAME:
@@ -52,8 +73,7 @@ const winnerReducer = (state = -1, action) => {
   }
 };
 
-const playerReducer = (state = 1, action) => {
-  // TODO: we should abstract out the player into an enumeration, { NONE: 0, Player1: 1, Player2: 2 }
+const playerReducer = (state = [[]], action) => {
   switch (action.type) {
     case types.PLAYER:
       return action.payload;
@@ -66,6 +86,7 @@ const playerReducer = (state = 1, action) => {
 
 export default combineReducers({
   board: boardReducer,
+  turn: turnReducer,
   gameover: gameoverReducer,
   winner: winnerReducer,
   player: playerReducer

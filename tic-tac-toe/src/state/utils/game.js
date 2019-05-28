@@ -1,45 +1,37 @@
 
-/*
-  rows          crosses       columns
-  ['X','X','X'] ['X',' ',' '] ['X',' ',' '] 
-  [' ',' ',' '] [' ','X',' '] ['X',' ',' ']
-  [' ',' ',' '] [' ',' ','X'] ['X',' ',' ']
-                
-  [' ',' ',' '] [' ',' ',' '] [' ','X',' ']
-  ['X','X','X'] [' ',' ',' '] [' ','X',' ']
-  [' ',' ',' '] [' ',' ',' '] [' ','X',' ']
-  
-  [' ',' ',' '] [' ',' ','X'] [' ',' ','X']
-  [' ',' ',' '] [' ','X',' '] [' ',' ','X']
-  ['X','X','X'] ['X',' ',' '] [' ',' ','X']
-*/
-const winningPatterns = [
-  // rows
-  [{ r: 0, c: 0 }, { r: 0, c: 1 }, { r: 0, c: 2 }],
-  [{ r: 1, c: 0 }, { r: 1, c: 1 }, { r: 1, c: 2 }],
-  [{ r: 2, c: 0 }, { r: 2, c: 1 }, { r: 2, c: 2 }],
-  // crosses
-  [{ r: 0, c: 0 }, { r: 1, c: 1 }, { r: 2, c: 2 }],
-  [{ r: 0, c: 2 }, { r: 1, c: 1 }, { r: 2, c: 0 }],
-  // columns
-  [{ r: 0, c: 0 }, { r: 1, c: 0 }, { r: 2, c: 0 }],
-  [{ r: 0, c: 1 }, { r: 1, c: 1 }, { r: 2, c: 1 }],
-  [{ r: 0, c: 2 }, { r: 1, c: 2 }, { r: 2, c: 2 }]
-];
-
 /**
  * Checks to see if there's a winner
  * @param {number[][]} board The game board
  * @param {number} player The player
  * @returns {boolean} True if there is a winner, false otherwise
  */
-const isWinner = (board, player) => {
-  return winningPatterns.some(pattern => pattern.every(square => {
-    const { r, c } = square;
+const isWinner = (board) => {
+  return winner(board,0, 1, 2)
+      || winner(board,3, 4, 5)
+      || winner(board,6, 7, 8)
+      || winner(board,0, 3, 6)
+      || winner(board,1, 4, 7)
+      || winner(board,2, 5, 8)
+      || winner(board,0, 4, 8)
+      || winner(board,6, 4, 2)
+      ;
+}
 
-    return board[r][c] === player;
-  }));
-};
+function winner(board, p1, p2, p3) {
+  if ((value(board, p1) === value(board, p2))
+      && (value(board, p2) === value(board, p3))) {
+    return value(board, p1);
+  }
+  return 0;
+}
+
+function value(board, idx) {
+  const row = parseInt(idx / 3);
+  const col = idx % 3;
+  console.log(idx+':'+row+'-'+col+'='+board[row][col]);
+
+  return board[row][col];
+}
 
 /**
  * Checks to see if there's a draw on the board
