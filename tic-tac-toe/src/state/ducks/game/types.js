@@ -7,11 +7,19 @@ const GAMEOVER = 'GAME_OVER';
 const MOVE = 'GAME_MOVE';
 const PLAYER = 'GAME_PLAYER';
 const WINNER = 'GAME_WINNER';
+const HUMAN = 1;
+const COMPUTER = 2;
+const RANDOM = 0;
+const MINIMAX = 1;
 
 export {
   NEW_GAME,
   GAMEOVER,
   MOVE,
   PLAYER,
-  WINNER
+  WINNER,
+  HUMAN,
+  COMPUTER,
+  RANDOM,
+  MINIMAX
 };

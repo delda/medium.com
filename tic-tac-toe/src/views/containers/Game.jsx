@@ -24,7 +24,7 @@ class Game extends Component {
 
   handleBoardOnMove(square) {
     // when a square is clicked we want to mark that square for the current player
-    const { board, player, gameover, playTurn, cpuTurn, checkWinner } = this.props;
+    const { board, player, gameover, playTurn, computerTurn, checkWinner } = this.props;
     const { row, col } = square;
 
     // only mark if the game is still in progress and the square is empty (none)
@@ -35,6 +35,7 @@ class Game extends Component {
 
     // make a play for the player
     playTurn(player, board, row, col);
+    computerTurn(player, board);
 
     // then check for a winner
     const hasWinner = checkWinner(board, player);
@@ -119,7 +120,7 @@ const mapDispatchToProps = {
   playTurn: gameOperations.playTurn,
   checkWinner: gameOperations.checkWinner,
   newGame: gameOperations.newGame,
-  cpuTurn: gameOperations.cpuTurn
+  computerTurn: gameOperations.computerTurn
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
