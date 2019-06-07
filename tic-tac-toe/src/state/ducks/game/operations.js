@@ -29,8 +29,9 @@ const checkWinner = (board, player) => (dispatch) => {
   // from our operations, we just return a boolean for the game winner
   let hasWinner = true;
 
-  if (isWinner(board, player)) {
-    dispatch(winner(player));
+  const winnerPlayer = isWinner(board);
+  if (winnerPlayer) {
+    dispatch(winner(winnerPlayer));
     dispatch(gameover());
   } else if (isDraw(board)) {
     dispatch(winner(0));
@@ -49,7 +50,7 @@ const checkWinner = (board, player) => (dispatch) => {
  * @param {number} row The row on the board
  * @param {number} col The column on the board
  */
-const playTurn = (player, row, col) => (dispatch) => {
+const playTurn = (player, board, row, col) => (dispatch) => {
   let nextPlayer;
 
   switch (player) {
@@ -68,8 +69,44 @@ const playTurn = (player, row, col) => (dispatch) => {
   dispatch(switchPlayer(nextPlayer));
 };
 
+const cpuTurn = (player, board) => (dispatch) => {
+  console.log('  cpuTurn');
+  console.log(board);
+  let row = 0;
+  let col = 0;
+  let randomIndex = 0;
+  let nextPlayer = (player == 1) ? 2 : 1;
+
+  console.log('==>');
+  console.log(isItemInArray(board, 0));
+  if (!isItemInArray(board, 0)) {
+    return false;
+  }
+
+  do {
+    randomIndex = Math.floor(Math.random() * 9);
+    row = parseInt(randomIndex / 3);
+    col = randomIndex % 3;
+  } while (board[row][col] !== 0);
+
+  dispatch(switchPlayer(nextPlayer));
+  dispatch(playTurn(nextPlayer, board, row, col));
+};
+
+const isItemInArray = (array, item) => {
+  for (var i = 0; i < array.length; i++) {
+    for (var j = 0; j <array[i].length; j++) {
+      if (array[i][j] === item) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 export {
   newGame,
   checkWinner,
-  playTurn
+  playTurn,
+  cpuTurn
 };
