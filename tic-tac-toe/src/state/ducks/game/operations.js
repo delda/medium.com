@@ -6,6 +6,9 @@
 
 import { newGame, gameover, switchPlayer, winner, movePlayer } from './actions';
 import { isWinner, isDraw } from '../../utils/game';
+import * as types from './types';
+import { Random } from '../../../ai/random';
+import { Minimax } from '../../../ai/minimax';
 
 // NOTE: we can probably use mapDispatchToProps in the component and dispatch each of these 
 // actions one after another ourselves, but using redux-thunk to defer or conditionally 
@@ -69,25 +72,18 @@ const playTurn = (player, board, row, col) => (dispatch) => {
   dispatch(switchPlayer(nextPlayer));
 };
 
-const cpuTurn = (player, board) => (dispatch) => {
-  console.log('  cpuTurn');
-  console.log(board);
+const computerTurn = (player, board) => (dispatch) => {
   let row = 0;
   let col = 0;
-  let randomIndex = 0;
-  let nextPlayer = (player == 1) ? 2 : 1;
+  let nextPlayer = (player === 1) ? 2 : 1;
 
-  console.log('==>');
-  console.log(isItemInArray(board, 0));
   if (!isItemInArray(board, 0)) {
     return false;
   }
 
-  do {
-    randomIndex = Math.floor(Math.random() * 9);
-    row = parseInt(randomIndex / 3);
-    col = randomIndex % 3;
-  } while (board[row][col] !== 0);
+  [row, col] = algorithmFactory
+      .create({type: types.RANDOM})
+      .chooseMove(board, nextPlayer);
 
   dispatch(switchPlayer(nextPlayer));
   dispatch(playTurn(nextPlayer, board, row, col));
@@ -104,9 +100,28 @@ const isItemInArray = (array, item) => {
   return false;
 };
 
+const algorithmFactory = {
+  create: function(options) {
+    var algorithm;
+    switch (options.type) {
+      case types.RANDOM:
+        algorithm = new Random();
+        break;
+      case types.MINIMAX:
+        algorithm = new Minimax();
+        break;
+      default:
+        algorithm = new Random();
+        break;
+    }
+
+    return algorithm;
+  }
+};
+
 export {
   newGame,
   checkWinner,
   playTurn,
-  cpuTurn
+  computerTurn
 };

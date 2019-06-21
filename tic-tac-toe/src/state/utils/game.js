@@ -6,16 +6,16 @@
  * @returns {boolean} True if there is a winner, false otherwise
  */
 const isWinner = (board) => {
-  return winner(board,0, 1, 2)
-      || winner(board,3, 4, 5)
-      || winner(board,6, 7, 8)
-      || winner(board,0, 3, 6)
+  return winner(board,1, 2, 3)
+      || winner(board,4, 5, 6)
+      || winner(board,7, 8, 9)
       || winner(board,1, 4, 7)
       || winner(board,2, 5, 8)
-      || winner(board,0, 4, 8)
-      || winner(board,6, 4, 2)
+      || winner(board,3, 6, 9)
+      || winner(board,1, 5, 9)
+      || winner(board,7, 5, 3)
       ;
-}
+};
 
 function winner(board, p1, p2, p3) {
   if ((value(board, p1) === value(board, p2))
@@ -26,9 +26,10 @@ function winner(board, p1, p2, p3) {
 }
 
 function value(board, idx) {
+  idx--;
   const row = parseInt(idx / 3);
   const col = idx % 3;
-  console.log(idx+':'+row+'-'+col+'='+board[row][col]);
+  // console.log('      '+idx+':'+row+'-'+col+'='+board[row][col]);
 
   return board[row][col];
 }
