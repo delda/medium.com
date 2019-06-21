@@ -2,7 +2,6 @@ import { isWinner } from '../state/utils/game';
 
 class Minimax {
     chooseMove(board, player) {
-        console.log('chooseMove');
         const moves = this.findMoves(board);
         let currentMax = -Infinity;
         let currentCoordinate = [];
@@ -13,23 +12,17 @@ class Minimax {
             boardClone[moves[i][0]][moves[i][1]] = player;
 
             max = this.minimax(boardClone, player, 1, player);
-            console.log(boardClone);
-            console.log(max);
             if (max > currentMax) {
                 currentMax = max;
                 currentCoordinate = moves[i];
             }
         }
-        console.log(currentCoordinate);
         return currentCoordinate;
     }
 
     minimax(board, player, depth, basePlayer) {
-        // console.log('minimax');
-        // console.log(board);
         let winner = isWinner(board);
         if (winner) {
-            // console.log('winner: ' + winner);
             return (winner === basePlayer) ? 10 : -10;
         }
 
@@ -38,7 +31,6 @@ class Minimax {
             return 0;
         }
 
-        let tmp = 0;
         let best = (depth % 2 === 0) ? -Infinity : Infinity;
         let nextPlayer = (player === 1) ? 2 : 1;
         let boardClone = [];
@@ -50,17 +42,15 @@ class Minimax {
             boardClone[x][y] = nextPlayer;
 
             if (depth % 2 === 0){
-                tmp = this.minimax(boardClone, nextPlayer, depth + 1, basePlayer);
-                // console.log(tmp);
-                best = Math.max(best, tmp);
-                // console.log(best);
+                best = Math.max(
+                    this.minimax(boardClone, nextPlayer, depth + 1, basePlayer),
+                    best);
             } else {
-                tmp = this.minimax(boardClone, nextPlayer, depth + 1, basePlayer);
-                // console.log(tmp);
-                best = Math.min(best, tmp);
-                // console.log(best);
+                best = Math.min(
+                    this.minimax(boardClone, nextPlayer, depth + 1, basePlayer),
+                    best);
             }
-        };
+        }
 
         return best;
     }
