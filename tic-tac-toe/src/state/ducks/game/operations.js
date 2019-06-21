@@ -82,7 +82,8 @@ const computerTurn = (player, board) => (dispatch) => {
   }
 
   [row, col] = algorithmFactory
-      .create({type: types.RANDOM})
+      .create({type: types.MINIMAX})
+      // .create({type: types.RANDOM})
       .chooseMove(board, nextPlayer);
 
   dispatch(switchPlayer(nextPlayer));
