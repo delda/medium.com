@@ -33,7 +33,7 @@ const styles = (theme) => ({
   '1_2': { borderTop: borderStyle, borderBottom: borderStyle }
 });
 
-const Board = ({ classes, board, onMove }) => {
+const Board = ({ classes, board, ai, onMove }) => {
   // the 'board' and 'onMove' handler are passed in from the props of the Game which
   // holds this component and control the state 
   // we will simply render the 'board' in its current state and call the 'onMove'

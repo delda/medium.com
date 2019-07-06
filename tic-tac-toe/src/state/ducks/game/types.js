@@ -9,6 +9,7 @@ const PLAYER = 'GAME_PLAYER';
 const WINNER = 'GAME_WINNER';
 const HUMAN = 1;
 const COMPUTER = 2;
+const AI = 'AI';
 const RANDOM = 0;
 const MINIMAX = 1;
 
@@ -20,6 +21,7 @@ export {
   WINNER,
   HUMAN,
   COMPUTER,
+  AI,
   RANDOM,
   MINIMAX
 };

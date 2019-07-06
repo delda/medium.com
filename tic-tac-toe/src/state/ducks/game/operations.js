@@ -4,7 +4,7 @@
   write them and export them here.
 */
 
-import { newGame, gameover, switchPlayer, winner, movePlayer } from './actions';
+import { newGame, gameover, switchPlayer, winner, movePlayer, aiAlgorithm } from './actions';
 import { isWinner, isDraw } from '../../utils/game';
 import * as types from './types';
 import { Random } from '../../../ai/random';
@@ -72,11 +72,11 @@ const playTurn = (player, board, row, col) => (dispatch) => {
   dispatch(switchPlayer(nextPlayer));
 };
 
-const computerTurn = (player, board) => (dispatch) => {
+const computerTurn = (player, board, ai) => (dispatch) => {
   if (isWinner(board)) return false;
 
-  let row = 0;
-  let col = 0;
+  let row;
+  let col;
   let nextPlayer = (player === 1) ? 2 : 1;
 
   if (!isItemInArray(board, 0)) {
@@ -84,12 +84,15 @@ const computerTurn = (player, board) => (dispatch) => {
   }
 
   [row, col] = algorithmFactory
-      .create({type: types.MINIMAX})
-      // .create({type: types.RANDOM})
+      .create({type: ai})
       .chooseMove(board, nextPlayer);
 
   dispatch(switchPlayer(nextPlayer));
   dispatch(playTurn(nextPlayer, board, row, col));
+};
+
+const changeAiAlgorithm = (ai) => (dispatch) => {
+  dispatch(aiAlgorithm(ai));
 };
 
 const isItemInArray = (array, item) => {
@@ -126,5 +129,6 @@ export {
   newGame,
   checkWinner,
   playTurn,
-  computerTurn
+  computerTurn,
+  changeAiAlgorithm
 };
