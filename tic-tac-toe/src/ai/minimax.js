@@ -14,10 +14,14 @@ class Minimax {
             max = this.minimax(boardClone, player, 1, player);
             if (max > currentMax) {
                 currentMax = max;
-                currentCoordinate = moves[i];
+                currentCoordinate = [];
+                currentCoordinate.push(moves[i]);
+            } else if (max === currentMax) {
+                currentCoordinate.push(moves[i]);
             }
         }
-        return currentCoordinate;
+
+        return currentCoordinate[Math.floor(Math.random() * currentCoordinate.length)];
     }
 
     minimax(board, player, depth, basePlayer) {
