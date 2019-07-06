@@ -73,6 +73,8 @@ const playTurn = (player, board, row, col) => (dispatch) => {
 };
 
 const computerTurn = (player, board) => (dispatch) => {
+  if (isWinner(board)) return false;
+
   let row = 0;
   let col = 0;
   let nextPlayer = (player === 1) ? 2 : 1;
