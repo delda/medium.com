@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 
 import * as types from './types';
-import * as actions from './actions';
 
 const emptyBoard = () => [
   [0, 0, 0],
@@ -84,10 +83,16 @@ const playerReducer = (state = [[]], action) => {
   }
 };
 
+const aiReducer = (state = types.RANDOM, action) => {
+  if (action.type === types.AI) return action.payload;
+  return state;
+};
+
 export default combineReducers({
   board: boardReducer,
   turn: turnReducer,
   gameover: gameoverReducer,
   winner: winnerReducer,
-  player: playerReducer
+  player: playerReducer,
+  ai: aiReducer
 });

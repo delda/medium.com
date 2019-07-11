@@ -28,10 +28,16 @@ const winner = player => ({
   payload: player
 });
 
+const aiAlgorithm = algorithm => ({
+  type: types.AI,
+  payload: algorithm
+});
+
 export {
   newGame,
   gameover,
   movePlayer,
   switchPlayer,
-  winner
+  winner,
+  aiAlgorithm
 };
