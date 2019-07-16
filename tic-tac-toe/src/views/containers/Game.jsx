@@ -55,7 +55,7 @@ class Game extends Component {
   handleDialogClick(answer) {
     // we only want to start a new game if the player clicks 'yes'
     if (answer) {
-      this.props.newGame();
+      this.props.newGame(this.props.player);
     }
 
     // we always want to close the dialog

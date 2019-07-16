@@ -16,25 +16,8 @@ const move = (board, { player, row, col }) => {
   return updated;
 };
 
-const takeTurn = (state, action) => {
-  switch (action.payload.player) {
-    case types.HUMAN:
-      return action;
-    case types.COMPUTER:
-      console.log('choose of board');
-      return state;
-    default:
-      return state;
-  }
-};
-
-const turnReducer = (state = false, action) => {
-  switch (action.type) {
-    case types.PLAYER:
-      return takeTurn(state, action);
-    default:
-      return state;
-  }
+const changeTurn = (player) => {
+  return 3 - player;
 };
 
 const boardReducer = (state = [[]], action) => {
@@ -72,12 +55,13 @@ const winnerReducer = (state = -1, action) => {
   }
 };
 
-const playerReducer = (state = [[]], action) => {
+const playerReducer = (state = 0, action) => {
   switch (action.type) {
+    case types.NEW_GAME:
     case types.PLAYER:
       return action.payload;
-    case types.NEW_GAME:
-      return 1;
+    case types.GAMEOVER:
+      return changeTurn(action.payload);
     default:
       return state;
   }
@@ -90,7 +74,6 @@ const aiReducer = (state = types.RANDOM, action) => {
 
 export default combineReducers({
   board: boardReducer,
-  turn: turnReducer,
   gameover: gameoverReducer,
   winner: winnerReducer,
   player: playerReducer,

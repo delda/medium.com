@@ -17,7 +17,7 @@ if (!initialState) {
 
   // our new game operation returns an action object that we can use in the 
   // redux store to dispatch
-  const newGame = gameOperations.newGame();
+  const newGame = gameOperations.newGame(1);
 
   store.dispatch(newGame);
 }

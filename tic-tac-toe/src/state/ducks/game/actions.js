@@ -5,12 +5,14 @@
 
 import * as types from './types';
 
-const newGame = () => ({
-  type: types.NEW_GAME
+const newGame = (player) => ({
+  type: types.NEW_GAME,
+  payload: player
 });
 
-const gameover = () => ({
-  type: types.GAMEOVER
+const gameover = (player) => ({
+  type: types.GAMEOVER,
+  payload: player
 });
 
 const movePlayer = (player, row, col) => ({

@@ -35,10 +35,10 @@ const checkWinner = (board, player) => (dispatch) => {
   const winnerPlayer = isWinner(board);
   if (winnerPlayer) {
     dispatch(winner(winnerPlayer));
-    dispatch(gameover());
+    dispatch(gameover(player));
   } else if (isDraw(board)) {
     dispatch(winner(0));
-    dispatch(gameover());
+    dispatch(gameover(player));
   } else {
     hasWinner = false;
   }
