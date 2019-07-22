@@ -79,3 +79,7 @@ export default combineReducers({
   player: playerReducer,
   ai: aiReducer
 });
+
+export {
+  emptyBoard
+};

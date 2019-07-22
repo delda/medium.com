@@ -10,6 +10,7 @@ import Board from '../components/Board.jsx';
 import PlayerInfo from '../components/PlayerInfo.jsx';
 import GameoverDialog from '../components/GameoverDialog.jsx';
 import DropdownAI from "../components/DropdownAI.jsx";
+import { emptyBoard } from "../../state/ducks/game/reducers";
 
 class Game extends Component {
   constructor(props, context) {
@@ -53,13 +54,21 @@ class Game extends Component {
   }
 
   handleDialogClick(answer) {
-    // we only want to start a new game if the player clicks 'yes'
-    if (answer) {
-      this.props.newGame(this.props.player);
-    }
+    // @TODO
+    // a fine giocata, si preme sul tasto "Yes" per fare una nuova partita
+    // quando arriva al computerTurn, c'è ancora la vecchia mappa del gioco
+    const { player, computerTurn, ai } = this.props;
 
     // we always want to close the dialog
     this.setState({ showDialog: false });
+
+    // we only want to start a new game if the player clicks 'yes'
+    if (answer) {
+      this.props.createGame(this.props.player);
+    }
+    const board = emptyBoard();
+
+    computerTurn(player, emptyBoard(), ai);
   }
 
   handleDialogClose() {
@@ -116,7 +125,7 @@ Game.propTypes = {
   gameover: bool.isRequired,
   playTurn: func.isRequired,
   checkWinner: func.isRequired,
-  newGame: func.isRequired,
+  createGame: func.isRequired,
   ai: number.isRequired
 };
 
@@ -135,7 +144,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   playTurn: gameOperations.playTurn,
   checkWinner: gameOperations.checkWinner,
-  newGame: gameOperations.newGame,
+  createGame: gameOperations.createGame,
   computerTurn: gameOperations.computerTurn,
   changeAiAlgorithm: gameOperations.changeAiAlgorithm
 };
