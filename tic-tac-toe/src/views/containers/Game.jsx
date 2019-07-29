@@ -54,9 +54,6 @@ class Game extends Component {
   }
 
   handleDialogClick(answer) {
-    // @TODO
-    // a fine giocata, si preme sul tasto "Yes" per fare una nuova partita
-    // quando arriva al computerTurn, c'è ancora la vecchia mappa del gioco
     const { player, computerTurn, ai } = this.props;
 
     // we always want to close the dialog
@@ -65,10 +62,11 @@ class Game extends Component {
     // we only want to start a new game if the player clicks 'yes'
     if (answer) {
       this.props.createGame(this.props.player);
-    }
-    const board = emptyBoard();
 
-    computerTurn(player, emptyBoard(), ai);
+      if (this.props.playerTurn === 2) {
+        computerTurn(player, emptyBoard(), ai);
+      }
+    }
   }
 
   handleDialogClose() {
@@ -78,7 +76,7 @@ class Game extends Component {
 
   render() {
     const { showDialog } = this.state;
-    const { board, player, gameover, winner, ai } = this.props;
+    const { board, player, playerTurn, gameover, winner, ai } = this.props;
     const draw = winner === 0;
 
     return (
@@ -92,20 +90,20 @@ class Game extends Component {
             <Board board={board} ai={ai} onMove={this.handleBoardOnMove} />
           </Grid>
           <Grid item xs={12} sm={6} md={8}>
-            <PlayerInfo player={player} gameover={gameover} />
+            <PlayerInfo player={player} gameover={gameover} playerTurn={playerTurn} />
           </Grid>
         </Grid>
         <GameoverDialog
           open={showDialog}
           isDraw={draw}
           player={winner}
+          playerTurn={playerTurn}
           onClick={this.handleDialogClick}
           onClose={this.handleDialogClose} />
         <DropdownAI
             onClick={this.handleSelectAlgorithm}
-
             options={[
-              { text: "Random", value: gameTypes.RANDOM},
+              { text: "Random", value: gameTypes.RANDOM },
               { text: "Minimax", value: gameTypes.MINIMAX }
         ]} />
       </div>
@@ -121,6 +119,7 @@ const { arrayOf, number, func, bool } = PropTypes;
 Game.propTypes = {
   board: arrayOf(arrayOf(number)).isRequired,
   player: number.isRequired,
+  playerTurn: number.isRequired,
   winner: number.isRequired,
   gameover: bool.isRequired,
   playTurn: func.isRequired,
@@ -135,6 +134,7 @@ const mapStateToProps = (state) => {
   return {
     board: gameState.board,
     player: gameState.player,
+    playerTurn: gameState.playerTurn,
     gameover: gameState.gameover,
     winner: gameState.winner,
     ai: gameState.ai

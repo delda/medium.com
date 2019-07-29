@@ -60,17 +60,7 @@ const checkWinner = (board, player) => (dispatch) => {
 const playTurn = (player, board, row, col) => (dispatch) => {
   let nextPlayer;
 
-  switch (player) {
-    case 1:
-      nextPlayer = 2;
-      break;
-    case 2:
-      nextPlayer = 1;
-      break;
-    default:
-      // throw error?
-      break;
-  }
+  nextPlayer = 3 - player;
 
   dispatch(movePlayer(player, row, col));
   dispatch(switchPlayer(nextPlayer));
