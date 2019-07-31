@@ -14,6 +14,10 @@ import { Minimax } from '../../../ai/minimax';
 // actions one after another ourselves, but using redux-thunk to defer or conditionally 
 // dispatch is better and keeps our code clean in the components and operations
 
+const createGame = (player) => (dispatch) => {
+  dispatch(newGame(player));
+};
+
 /**
  * Checks for a winner, if there is one, we dispatch two actions, one for winning the 
  * game (winner) and another for gameover.
@@ -35,10 +39,10 @@ const checkWinner = (board, player) => (dispatch) => {
   const winnerPlayer = isWinner(board);
   if (winnerPlayer) {
     dispatch(winner(winnerPlayer));
-    dispatch(gameover());
+    dispatch(gameover(player));
   } else if (isDraw(board)) {
     dispatch(winner(0));
-    dispatch(gameover());
+    dispatch(gameover(player));
   } else {
     hasWinner = false;
   }
@@ -56,17 +60,7 @@ const checkWinner = (board, player) => (dispatch) => {
 const playTurn = (player, board, row, col) => (dispatch) => {
   let nextPlayer;
 
-  switch (player) {
-    case 1:
-      nextPlayer = 2;
-      break;
-    case 2:
-      nextPlayer = 1;
-      break;
-    default:
-      // throw error?
-      break;
-  }
+  nextPlayer = 3 - player;
 
   dispatch(movePlayer(player, row, col));
   dispatch(switchPlayer(nextPlayer));
@@ -126,7 +120,8 @@ const algorithmFactory = {
 };
 
 export {
-  newGame,
+  newGame, // lo lascio ancora perché presente nel TitleBar
+  createGame,
   checkWinner,
   playTurn,
   computerTurn,

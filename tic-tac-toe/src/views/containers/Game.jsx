@@ -10,6 +10,7 @@ import Board from '../components/Board.jsx';
 import PlayerInfo from '../components/PlayerInfo.jsx';
 import GameoverDialog from '../components/GameoverDialog.jsx';
 import DropdownAI from "../components/DropdownAI.jsx";
+import { emptyBoard } from "../../state/ducks/game/reducers";
 
 class Game extends Component {
   constructor(props, context) {
@@ -53,13 +54,19 @@ class Game extends Component {
   }
 
   handleDialogClick(answer) {
-    // we only want to start a new game if the player clicks 'yes'
-    if (answer) {
-      this.props.newGame();
-    }
+    const { player, computerTurn, ai } = this.props;
 
     // we always want to close the dialog
     this.setState({ showDialog: false });
+
+    // we only want to start a new game if the player clicks 'yes'
+    if (answer) {
+      this.props.createGame(this.props.player);
+
+      if (this.props.playerTurn === 2) {
+        computerTurn(player, emptyBoard(), ai);
+      }
+    }
   }
 
   handleDialogClose() {
@@ -69,7 +76,7 @@ class Game extends Component {
 
   render() {
     const { showDialog } = this.state;
-    const { board, player, gameover, winner, ai } = this.props;
+    const { board, player, playerTurn, gameover, winner, ai } = this.props;
     const draw = winner === 0;
 
     return (
@@ -83,20 +90,20 @@ class Game extends Component {
             <Board board={board} ai={ai} onMove={this.handleBoardOnMove} />
           </Grid>
           <Grid item xs={12} sm={6} md={8}>
-            <PlayerInfo player={player} gameover={gameover} />
+            <PlayerInfo player={player} gameover={gameover} playerTurn={playerTurn} />
           </Grid>
         </Grid>
         <GameoverDialog
           open={showDialog}
           isDraw={draw}
           player={winner}
+          playerTurn={playerTurn}
           onClick={this.handleDialogClick}
           onClose={this.handleDialogClose} />
         <DropdownAI
             onClick={this.handleSelectAlgorithm}
-
             options={[
-              { text: "Random", value: gameTypes.RANDOM},
+              { text: "Random", value: gameTypes.RANDOM },
               { text: "Minimax", value: gameTypes.MINIMAX }
         ]} />
       </div>
@@ -112,11 +119,12 @@ const { arrayOf, number, func, bool } = PropTypes;
 Game.propTypes = {
   board: arrayOf(arrayOf(number)).isRequired,
   player: number.isRequired,
+  playerTurn: number.isRequired,
   winner: number.isRequired,
   gameover: bool.isRequired,
   playTurn: func.isRequired,
   checkWinner: func.isRequired,
-  newGame: func.isRequired,
+  createGame: func.isRequired,
   ai: number.isRequired
 };
 
@@ -126,6 +134,7 @@ const mapStateToProps = (state) => {
   return {
     board: gameState.board,
     player: gameState.player,
+    playerTurn: gameState.playerTurn,
     gameover: gameState.gameover,
     winner: gameState.winner,
     ai: gameState.ai
@@ -135,7 +144,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   playTurn: gameOperations.playTurn,
   checkWinner: gameOperations.checkWinner,
-  newGame: gameOperations.newGame,
+  createGame: gameOperations.createGame,
   computerTurn: gameOperations.computerTurn,
   changeAiAlgorithm: gameOperations.changeAiAlgorithm
 };
