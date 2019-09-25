@@ -9,6 +9,7 @@ import { isWinner, isDraw } from '../../utils/game';
 import * as types from './types';
 import { Random } from '../../../ai/random';
 import { Minimax } from '../../../ai/minimax';
+import { MCTS } from '../../../ai/mcts';
 
 // NOTE: we can probably use mapDispatchToProps in the component and dispatch each of these 
 // actions one after another ourselves, but using redux-thunk to defer or conditionally 
@@ -71,7 +72,7 @@ const computerTurn = (player, board, ai) => (dispatch) => {
 
   let row;
   let col;
-  let nextPlayer = (player === 1) ? 2 : 1;
+  let nextPlayer = 3 - player;
 
   if (!isItemInArray(board, 0)) {
     return false;
@@ -104,11 +105,11 @@ const algorithmFactory = {
   create: function(options) {
     var algorithm;
     switch (options.type) {
-      case types.RANDOM:
-        algorithm = new Random();
-        break;
       case types.MINIMAX:
         algorithm = new Minimax();
+        break;
+      case types.MCTS:
+        algorithm = new MCTS();
         break;
       default:
         algorithm = new Random();

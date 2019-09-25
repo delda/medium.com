@@ -49,7 +49,7 @@ class Game extends Component {
   }
 
   handleSelectAlgorithm(event) {
-    const { ai, changeAiAlgorithm } = this.props;
+    const { changeAiAlgorithm } = this.props;
     changeAiAlgorithm(parseInt(event.target.value));
   }
 
@@ -104,8 +104,9 @@ class Game extends Component {
             onClick={this.handleSelectAlgorithm}
             options={[
               { text: "Random", value: gameTypes.RANDOM },
-              { text: "Minimax", value: gameTypes.MINIMAX }
-        ]} />
+              { text: "Minimax", value: gameTypes.MINIMAX },
+              { text: "Monte Carlo Tree Search", value: gameTypes.MCTS }
+            ]} />
       </div>
     );
   }

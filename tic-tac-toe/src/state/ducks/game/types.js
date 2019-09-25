@@ -12,6 +12,7 @@ const COMPUTER = 2;
 const AI = 'AI';
 const RANDOM = 0;
 const MINIMAX = 1;
+const MCTS = 2;
 
 export {
   NEW_GAME,
@@ -23,5 +24,6 @@ export {
   COMPUTER,
   AI,
   RANDOM,
-  MINIMAX
+  MINIMAX,
+  MCTS
 };
